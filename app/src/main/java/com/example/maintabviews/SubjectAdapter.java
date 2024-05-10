@@ -1,5 +1,6 @@
 package com.example.maintabviews;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,10 @@ import java.util.List;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemViewHolder> {
 
-    private List<Subject> itemList;
+    private List<Subject> subjectList;
 
-    public SubjectAdapter(List<Subject> itemList) {
-        this.itemList = itemList;
+    public SubjectAdapter(List<Subject> subjectList) {
+        this.subjectList = subjectList;
     }
 
     @NonNull
@@ -26,7 +27,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemView
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        Subject subject = itemList.get(position);
+        Subject subject = subjectList.get(position);
         holder.iconImageView.setImageResource(subject.getIcon());
         holder.nameTextView.setText(subject.getName());
         holder.descriptionTextView.setText(subject.getDescription());
@@ -34,7 +35,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemView
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        Log.d("SubjectAdapter", "getItemCount: " + subjectList.size());
+        return subjectList.size();
+
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {

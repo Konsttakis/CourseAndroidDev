@@ -32,6 +32,7 @@ public class Field1 extends Fragment {
         // The icons need to change to the actual icons we want to use
         subjectList.add(new Subject(R.drawable.ic_launcher_foreground, "Item 1", "Description 1"));
         subjectList.add(new Subject(R.drawable.ic_launcher_foreground, "Item 2", "Description 2"));
+        subjectList.add(new Subject(R.drawable.ic_launcher_foreground, "Item 3", "Description 3"));
         // Add all the courses in each field
 
         return view;
