@@ -1,6 +1,8 @@
 package com.example.maintabviews;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,31 +11,36 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class Field1 extends Fragment {
-
-    private RecyclerView recyclerView;
-    private List<Subject> subjectList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_field1, container, false);
 
-        recyclerView = view.findViewById(R.id.field1);
+        RecyclerView recyclerView = view.findViewById(R.id.field1);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        SubjectManager subjectManager = SubjectManager.getInstance();
+        List<Subject> subjectList = subjectManager.getField1();
         SubjectAdapter adapter = new SubjectAdapter(subjectList);
         recyclerView.setAdapter(adapter);
 
-        // Populate itemList with data
+        adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Log.d("Field", "onItemClick: Clicked");
 
-        // The icons need to change to the actual icons we want to use
-        subjectList.add(new Subject(R.drawable.ic_launcher_foreground, "Item 1", "Description 1"));
-        subjectList.add(new Subject(R.drawable.ic_launcher_foreground, "Item 2", "Description 2"));
-        subjectList.add(new Subject(R.drawable.ic_launcher_foreground, "Item 3", "Description 3"));
-        // Add all the courses in each field
+                Subject clickedSubject = subjectList.get(position);
+
+                Intent intent = new Intent(getActivity(), ChaptersActivity.class);
+                intent.putExtra("subject", clickedSubject.getName());
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

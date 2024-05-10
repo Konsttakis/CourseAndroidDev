@@ -13,6 +13,8 @@ import java.util.List;
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemViewHolder> {
 
     private List<Subject> subjectList;
+    private OnItemClickListener listener;
+
 
     public SubjectAdapter(List<Subject> subjectList) {
         this.subjectList = subjectList;
@@ -31,6 +33,15 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemView
         holder.iconImageView.setImageResource(subject.getIcon());
         holder.nameTextView.setText(subject.getName());
         holder.descriptionTextView.setText(subject.getDescription());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -52,4 +63,15 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemView
             descriptionTextView = itemView.findViewById(R.id.item_description);
         }
     }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
 }

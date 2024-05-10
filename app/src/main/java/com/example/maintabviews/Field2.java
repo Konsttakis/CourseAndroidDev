@@ -1,6 +1,7 @@
 package com.example.maintabviews;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,25 +15,26 @@ import java.util.List;
 
 public class Field2 extends Fragment {
 
-    private RecyclerView recyclerView;
-    private List<Subject> subjectList = new ArrayList<>();
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_field2, container, false);
 
-        recyclerView = view.findViewById(R.id.field2);
+        RecyclerView recyclerView = view.findViewById(R.id.field2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        SubjectManager subjectManager = SubjectManager.getInstance();
+        List<Subject> subjectList = subjectManager.getField2();
         SubjectAdapter adapter = new SubjectAdapter(subjectList);
         recyclerView.setAdapter(adapter);
 
-        // Populate itemList with data
+        adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Log.d("Field", "onItemClick: Clicked");
+            }
+        });
 
-        // The icons need to change to the actual icons we want to use
-        subjectList.add(new Subject(R.drawable.ic_launcher_foreground, "Item 1", "Description 1"));
-        subjectList.add(new Subject(R.drawable.ic_launcher_foreground, "Item 2", "Description 2"));
-        // Add all the courses in each field
 
         return view;
     }
