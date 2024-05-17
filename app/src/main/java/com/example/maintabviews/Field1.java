@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Field1 extends Fragment {
@@ -27,6 +28,7 @@ public class Field1 extends Fragment {
         SubjectManager subjectManager = SubjectManager.getInstance();
         List<Subject> subjectList = subjectManager.getField1();
         SubjectAdapter adapter = new SubjectAdapter(subjectList);
+//        ChapterAdapter adapter = new ChapterAdapter(new ArrayList<>()); //chapters list of the subject to be initialized
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {

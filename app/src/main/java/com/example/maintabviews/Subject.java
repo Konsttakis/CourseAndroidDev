@@ -1,25 +1,22 @@
 package com.example.maintabviews;
 
+import java.util.ArrayList;
+
 public class Subject {
-    private int icon;
+
     private String name;
-    private String description;
+    private ArrayList<Chapter> chapters;
 
-    public Subject(int icon, String name, String description) {
-        this.icon = icon;
+    public Subject(String name, ArrayList<Chapter> chapters) {
         this.name = name;
-        this.description = description;
-    }
-
-    public int getIcon() {
-        return icon;
+        this.chapters = chapters;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getDescription() {
-        return description;
+    public ArrayList<Chapter> getChapters() {
+        return chapters;
     }
 }

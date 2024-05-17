@@ -28,22 +28,22 @@ public class SubjectManager {
     }
 
     private void initializeFields() {
-        field1.add(new Subject(R.drawable.ic_launcher_foreground, "Item 1", "Description 1"));
-        field1.add(new Subject(R.drawable.ic_launcher_foreground, "Item 2", "Description 2"));
-        field1.add(new Subject(R.drawable.ic_launcher_foreground, "Item 3", "Description 3"));
-        field1.add(new Subject(R.drawable.ic_launcher_foreground, "Item 4", "Description 4"));
+        field1.add(new Subject("Item 1", new ArrayList<>()));
+        field1.add(new Subject("Item 1", new ArrayList<>()));
+        field1.add(new Subject("Item 1", new ArrayList<>()));
+        field1.add(new Subject("Item 1", new ArrayList<>()));
 
-        field2.add(new Subject(R.drawable.ic_launcher_foreground, "Item 1", "Description 1"));
-        field2.add(new Subject(R.drawable.ic_launcher_foreground, "Item 2", "Description 2"));
-        field2.add(new Subject(R.drawable.ic_launcher_foreground, "Item 3", "Description 3"));
+        field2.add(new Subject("Item 1", new ArrayList<>()));
+        field2.add(new Subject("Item 1", new ArrayList<>()));
+        field2.add(new Subject("Item 1", new ArrayList<>()));
 
-        field3.add(new Subject(R.drawable.ic_launcher_foreground, "Item 1", "Description 1"));
-        field3.add(new Subject(R.drawable.ic_launcher_foreground, "Item 2", "Description 2"));
-        field3.add(new Subject(R.drawable.ic_launcher_foreground, "Item 3", "Description 3"));
-        field3.add(new Subject(R.drawable.ic_launcher_foreground, "Item 4", "Description 4"));
+        field3.add(new Subject("Item 1", new ArrayList<>()));
+        field3.add(new Subject("Item 1", new ArrayList<>()));
+        field3.add(new Subject("Item 1", new ArrayList<>()));
+        field3.add(new Subject("Item 1", new ArrayList<>()));
 
-        field4.add(new Subject(R.drawable.ic_launcher_foreground, "Item 1", "Description 1"));
-        field4.add(new Subject(R.drawable.ic_launcher_foreground, "Item 2", "Description 2"));
+        field4.add(new Subject("Item 1", new ArrayList<>()));
+        field4.add(new Subject("Item 1", new ArrayList<>()));
     }
 
     public List<Subject> getField1() { return field1; }

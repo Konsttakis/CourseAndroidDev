@@ -30,9 +30,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemView
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Subject subject = subjectList.get(position);
-        holder.iconImageView.setImageResource(subject.getIcon());
+//        holder.iconImageView.setImageResource(subject.getIcon());
         holder.nameTextView.setText(subject.getName());
-        holder.descriptionTextView.setText(subject.getDescription());
+//        holder.descriptionTextView.setText(subject.getDescription());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
