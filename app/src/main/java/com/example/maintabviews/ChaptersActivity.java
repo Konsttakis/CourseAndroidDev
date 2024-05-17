@@ -33,9 +33,9 @@ public class ChaptersActivity extends AppCompatActivity {
     // Method to retrieve chapters for the subjectName from your data source
     private List<Chapter> getChaptersForSubject(String subjectName) {
 
-        Chapter chapter1 = new Chapter("Chapter 1", false);
-        Chapter chapter2 = new Chapter("Chapter 2", false);
-        Chapter chapter3 = new Chapter("Chapter 3", true);
+        Chapter chapter1 = new Chapter("Μαθηματικά" , "Chapter 1", false);
+        Chapter chapter2 = new Chapter("Μαθηματικά" , "Chapter 2", false);
+        Chapter chapter3 = new Chapter("Μαθηματικά", "Chapter 3", true);
         return new ArrayList<>(); // Placeholder, replace with actual implementation
     }
 }
