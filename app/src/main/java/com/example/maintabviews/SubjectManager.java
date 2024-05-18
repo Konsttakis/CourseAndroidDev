@@ -28,7 +28,7 @@ public class SubjectManager {
     }
 
     private void initializeFields() {
-        field1.add(new Subject("Item 1", new ArrayList<>()));
+        field1.add(new Subject("Μαθηματικά", new ArrayList<>()));
         field1.add(new Subject("Item 1", new ArrayList<>()));
         field1.add(new Subject("Item 1", new ArrayList<>()));
         field1.add(new Subject("Item 1", new ArrayList<>()));

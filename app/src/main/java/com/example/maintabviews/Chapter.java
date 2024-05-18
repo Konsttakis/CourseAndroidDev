@@ -22,4 +22,8 @@ public class Chapter {
     public boolean isCompleted() {
         return isCompleted;
     }
+
+    public void updateCompleted(boolean completed) {
+        isCompleted = completed;
+    }
 }
