@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "chapterCompleted";
+    private static final String DATABASE_NAME = "chapters.db";
     public static final String TABLE_COMPLETED_CHAPTERS = "CompletedChapters";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_SUBJECT_NAME = "subject_name";
@@ -55,7 +55,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<Chapter> chapters = new ArrayList<Chapter>();
         String selectQuery = "SELECT * FROM " + TABLE_COMPLETED_CHAPTERS + " WHERE " + COLUMN_SUBJECT_NAME + " = '" + subject + "';";
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {

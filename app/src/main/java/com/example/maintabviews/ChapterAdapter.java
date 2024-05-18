@@ -1,5 +1,6 @@
 package com.example.maintabviews;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +32,9 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
         Chapter chapter = chapterList.get(position);
         holder.checkBox.setText(chapter.getName());
         holder.checkBox.setChecked(chapter.isCompleted());
-        holder.checkBox.setOnClickListener(v -> {
-            boolean isChecked = holder.checkBox.isChecked();
-            chapter.updateCompleted(isChecked);
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            chapter.setCompleted(isChecked);
             notifyItemChanged(position);
-//          Needs to change the isCompleted value of the chapter to what is actually selected
         });
     }
 
@@ -45,12 +44,10 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        String chapterName;
         CheckBox checkBox;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-//            chapterName = itemView.findViewById(R.id.checkbox.text);
             checkBox = itemView.findViewById(R.id.checkbox);
         }
     }

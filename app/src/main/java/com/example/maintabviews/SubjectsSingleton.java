@@ -1,22 +1,23 @@
 package com.example.maintabviews;
 
+import android.util.Log;
+
 import java.util.ArrayList;
-import java.util.List;
 
-public class SubjectManager{
+public class SubjectsSingleton {
 
-    private static SubjectManager instance;
+    private static SubjectsSingleton instance;
     private ArrayList<Subject> mandatorySubjects;
     private ArrayList<Subject> optionalSubjects;
 
-    private SubjectManager() {
+    private SubjectsSingleton() {
         mandatorySubjects = new ArrayList<>();
         optionalSubjects = new ArrayList<>();
     }
 
-    public static SubjectManager getInstance() {
+    public static SubjectsSingleton getInstance() {
         if (instance == null) {
-            instance = new SubjectManager();
+            instance = new SubjectsSingleton();
         }
         return instance;
     }
@@ -29,7 +30,8 @@ public class SubjectManager{
         this.optionalSubjects = optionalSubjects;
     }
 
-    public ArrayList<Subject> getMandatorySubjects() { return mandatorySubjects; }
+    public ArrayList<Subject> getMandatorySubjects() {
+        return mandatorySubjects; }
 
     public ArrayList<Subject> getOptionalSubjects() { return optionalSubjects; }
 

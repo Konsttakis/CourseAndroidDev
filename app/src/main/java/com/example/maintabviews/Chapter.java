@@ -2,8 +2,8 @@ package com.example.maintabviews;
 
 public class Chapter {
 
-    private String courseName;
-    private String name;
+    private final String courseName;
+    private final String name;
     private boolean isCompleted = false;
 
     public Chapter(String courseName, String name, boolean isCompleted) {
@@ -23,7 +23,7 @@ public class Chapter {
         return isCompleted;
     }
 
-    public void updateCompleted(boolean completed) {
+    public void setCompleted(boolean completed) {
         isCompleted = completed;
     }
 }

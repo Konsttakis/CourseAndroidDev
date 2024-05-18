@@ -1,17 +1,17 @@
 package com.example.maintabviews;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ChaptersActivity extends AppCompatActivity {
 
-    SubjectManager subjectManager = SubjectManager.getInstance();
+    SubjectsSingleton subjectsSingleton = SubjectsSingleton.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +19,15 @@ public class ChaptersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chapters);
 
         // Receive subject name passed via Intent
-        String subjectName = getIntent().getStringExtra("subject_name");
+        String subjectName = getIntent().getStringExtra("subjectName");
 
         ArrayList<Chapter> chapterList = new ArrayList<>();
-        for (Subject subject : subjectManager.getMandatorySubjects()) {
+        for (Subject subject : subjectsSingleton.getMandatorySubjects()) {
+            if (subject.getName().equals(subjectName)) {
+                chapterList.addAll(subject.getChapters());
+            }
+        }
+        for (Subject subject : subjectsSingleton.getOptionalSubjects()) {
             if (subject.getName().equals(subjectName)) {
                 chapterList.addAll(subject.getChapters());
             }
@@ -35,12 +40,4 @@ public class ChaptersActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    // Method to retrieve chapters for the subjectName from your data source
-    private List<Chapter> getChaptersForSubject(String subjectName) {
-
-        Chapter chapter1 = new Chapter("Μαθηματικά" , "Chapter 1", false);
-        Chapter chapter2 = new Chapter("Μαθηματικά" , "Chapter 2", false);
-        Chapter chapter3 = new Chapter("Μαθηματικά", "Chapter 3", true);
-        return new ArrayList<>(); // Placeholder, replace with actual implementation
-    }
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class FragmentMandatory extends Fragment {
 
-    SubjectManager subjectManager = SubjectManager.getInstance();
+    SubjectsSingleton subjectsSingleton = SubjectsSingleton.getInstance();
 
 
     @Nullable
@@ -27,8 +27,8 @@ public class FragmentMandatory extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.field1);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        SubjectManager subjectManager = SubjectManager.getInstance();
-        ArrayList<Subject> subjectList = subjectManager.getMandatorySubjects();
+        SubjectsSingleton subjectsSingleton = SubjectsSingleton.getInstance();
+        ArrayList<Subject> subjectList = subjectsSingleton.getMandatorySubjects();
         SubjectAdapter adapter = new SubjectAdapter(subjectList);
         recyclerView.setAdapter(adapter);
 
@@ -39,8 +39,7 @@ public class FragmentMandatory extends Fragment {
                 Subject clickedSubject = subjectList.get(position);
 
                 Intent intent = new Intent(getActivity(), ChaptersActivity.class);
-                Log.d("Field", "onItemClick: Clicked" + clickedSubject.getName());
-                intent.putExtra("subject", clickedSubject.getName());
+                intent.putExtra("subjectName", clickedSubject.getName());
                 startActivity(intent);
             }
         });

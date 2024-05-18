@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FragmentOptional extends Fragment {
 
@@ -25,16 +24,14 @@ public class FragmentOptional extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.field2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        SubjectManager subjectManager = SubjectManager.getInstance();
-        ArrayList<Subject> subjectList = subjectManager.getOptionalSubjects();
+        SubjectsSingleton subjectsSingleton = SubjectsSingleton.getInstance();
+        ArrayList<Subject> subjectList = subjectsSingleton.getOptionalSubjects();
         SubjectAdapter adapter = new SubjectAdapter(subjectList);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Log.d("Field", "onItemClick: Clicked");
-
                 Subject clickedSubject = subjectList.get(position);
 
                 Intent intent = new Intent(getActivity(), ChaptersActivity.class);
