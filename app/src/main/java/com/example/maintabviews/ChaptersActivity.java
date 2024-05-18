@@ -35,12 +35,21 @@ public class ChaptersActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    // Method to retrieve chapters for the subjectName from your data source
+    // Method to retrieve chapters for the subjectName from data source
     private List<Chapter> getChaptersForSubject(String subjectName) {
 
         Chapter chapter1 = new Chapter("Μαθηματικά" , "Chapter 1", false);
         Chapter chapter2 = new Chapter("Μαθηματικά" , "Chapter 2", false);
         Chapter chapter3 = new Chapter("Μαθηματικά", "Chapter 3", true);
-        return new ArrayList<>(); // Placeholder, replace with actual implementation
+
+        List<Chapter> chapters = new ArrayList<>();
+        chapters.add(chapter1);
+        chapters.add(chapter2);
+        chapters.add(chapter3);
+
+        return chapters; // Placeholder, replace with actual implementation
     }
+
+
+    
 }

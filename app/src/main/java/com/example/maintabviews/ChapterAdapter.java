@@ -3,7 +3,7 @@ package com.example.maintabviews;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,11 +29,13 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Chapter chapter = chapterList.get(position);
-        holder.chapterName.setText(chapter.getName());
-        holder.radioButton.setChecked(position == selectedPosition);
-        holder.radioButton.setOnClickListener(v -> {
-            selectedPosition = holder.getAdapterPosition();
-            notifyDataSetChanged();
+        holder.checkBox.setText(chapter.getName());
+        holder.checkBox.setChecked(chapter.isCompleted());
+        holder.checkBox.setOnClickListener(v -> {
+            boolean isChecked = holder.checkBox.isChecked();
+            chapter.updateCompleted(isChecked);
+            notifyItemChanged(position);
+//          Needs to change the isCompleted value of the chapter to what is actually selected
         });
     }
 
@@ -43,13 +45,13 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView chapterName;
-        RadioButton radioButton;
+        String chapterName;
+        CheckBox checkBox;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            chapterName = itemView.findViewById(R.id.chapterName);
-            radioButton = itemView.findViewById(R.id.radioButton);
+//            chapterName = itemView.findViewById(R.id.checkbox.text);
+            checkBox = itemView.findViewById(R.id.checkbox);
         }
     }
 }
