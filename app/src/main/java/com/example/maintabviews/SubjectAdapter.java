@@ -8,15 +8,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemViewHolder> {
 
-    private List<Subject> subjectList;
+    private ArrayList<Subject> subjectList;
     private OnItemClickListener listener;
 
 
-    public SubjectAdapter(List<Subject> subjectList) {
+    public SubjectAdapter(ArrayList<Subject> subjectList) {
         this.subjectList = subjectList;
     }
 
@@ -30,9 +32,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemView
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Subject subject = subjectList.get(position);
-//        holder.iconImageView.setImageResource(subject.getIcon());
         holder.nameTextView.setText(subject.getName());
-//        holder.descriptionTextView.setText(subject.getDescription());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,9 +46,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemView
 
     @Override
     public int getItemCount() {
-        Log.d("SubjectAdapter", "getItemCount: " + subjectList.size());
         return subjectList.size();
-
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {

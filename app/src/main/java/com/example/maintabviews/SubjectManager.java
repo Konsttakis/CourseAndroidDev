@@ -3,21 +3,15 @@ package com.example.maintabviews;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectManager {
+public class SubjectManager{
 
     private static SubjectManager instance;
-    private List<Subject> field1;
-    private List<Subject> field2;
-    private List<Subject> field3;
-
-    private List<Subject> field4;
+    private ArrayList<Subject> mandatorySubjects;
+    private ArrayList<Subject> optionalSubjects;
 
     private SubjectManager() {
-        field1 = new ArrayList<>();
-        field2 = new ArrayList<>();
-        field3 = new ArrayList<>();
-        field4 = new ArrayList<>();
-        initializeFields();
+        mandatorySubjects = new ArrayList<>();
+        optionalSubjects = new ArrayList<>();
     }
 
     public static SubjectManager getInstance() {
@@ -27,32 +21,19 @@ public class SubjectManager {
         return instance;
     }
 
-    private void initializeFields() {
-        field1.add(new Subject("Item 1", new ArrayList<>()));
-        field1.add(new Subject("Item 1", new ArrayList<>()));
-        field1.add(new Subject("Item 1", new ArrayList<>()));
-        field1.add(new Subject("Item 1", new ArrayList<>()));
-
-        field2.add(new Subject("Item 1", new ArrayList<>()));
-        field2.add(new Subject("Item 1", new ArrayList<>()));
-        field2.add(new Subject("Item 1", new ArrayList<>()));
-
-        field3.add(new Subject("Item 1", new ArrayList<>()));
-        field3.add(new Subject("Item 1", new ArrayList<>()));
-        field3.add(new Subject("Item 1", new ArrayList<>()));
-        field3.add(new Subject("Item 1", new ArrayList<>()));
-
-        field4.add(new Subject("Item 1", new ArrayList<>()));
-        field4.add(new Subject("Item 1", new ArrayList<>()));
+    public void setMandatorySubjects(ArrayList<Subject> mandatorySubjects) {
+        this.mandatorySubjects = mandatorySubjects;
     }
 
-    public List<Subject> getField1() { return field1; }
+    public void setOptionalSubjects(ArrayList<Subject> optionalSubjects) {
+        this.optionalSubjects = optionalSubjects;
+    }
 
-    public List<Subject> getField2() { return field2; }
+    public ArrayList<Subject> getMandatorySubjects() { return mandatorySubjects; }
 
-    public List<Subject> getField3() { return field3; }
+    public ArrayList<Subject> getOptionalSubjects() { return optionalSubjects; }
 
-    public List<Subject> getField4() { return field4; }
+
 
 
 }
