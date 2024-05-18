@@ -11,6 +11,8 @@ import java.util.List;
 
 public class ChaptersActivity extends AppCompatActivity {
 
+    SubjectManager subjectManager = SubjectManager.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +21,12 @@ public class ChaptersActivity extends AppCompatActivity {
         // Receive subject name passed via Intent
         String subjectName = getIntent().getStringExtra("subject_name");
 
-        List<Chapter> chapterList = getChaptersForSubject(subjectName);
+        ArrayList<Chapter> chapterList = new ArrayList<>();
+        for (Subject subject : subjectManager.getMandatorySubjects()) {
+            if (subject.getName().equals(subjectName)) {
+                chapterList.addAll(subject.getChapters());
+            }
+        }
 
         // Set up RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -28,21 +35,12 @@ public class ChaptersActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    // Method to retrieve chapters for the subjectName from data source
+    // Method to retrieve chapters for the subjectName from your data source
     private List<Chapter> getChaptersForSubject(String subjectName) {
 
         Chapter chapter1 = new Chapter("Μαθηματικά" , "Chapter 1", false);
         Chapter chapter2 = new Chapter("Μαθηματικά" , "Chapter 2", false);
         Chapter chapter3 = new Chapter("Μαθηματικά", "Chapter 3", true);
-
-        List<Chapter> chapters = new ArrayList<>();
-        chapters.add(chapter1);
-        chapters.add(chapter2);
-        chapters.add(chapter3);
-
-        return chapters; // Placeholder, replace with actual implementation
+        return new ArrayList<>(); // Placeholder, replace with actual implementation
     }
-
-
-    
 }

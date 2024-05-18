@@ -15,11 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LaunchingActivity extends AppCompatActivity {
-    private static Field field;
-
-    public static Field getField() {
-        return field;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,64 +35,99 @@ public class LaunchingActivity extends AppCompatActivity {
         field1button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Subject> subjects = new ArrayList<>();
-                subjects.add(new Subject("Αρχαία Ελληνικά", new ArrayList<>()));
-                subjects.add(new Subject("Ιστορία", new ArrayList<>()));
-                subjects.add(new Subject("Λατινικά", new ArrayList<>()));
-                subjects.add(new Subject("Νεοελληνική Γλώσσα και Λογοτεχνία", new ArrayList<>()));
-                field = new Field("Ανθρωπιστικών, Νομικών και Κοινωνικών Επιστημών", new ArrayList<>(subjects));
-                openMainActivity();
+                String title = "Ανθρωπιστικών, Νομικών και Κοινωνικών Επιστημών";
+
+                ArrayList<String> mandatoryNames = new ArrayList<>();
+                mandatoryNames.add("Αρχαία Ελληνικά");
+                mandatoryNames.add("Ιστορία");
+                mandatoryNames.add("Λατινικά");
+                mandatoryNames.add("Νεοελληνική Γλώσσα και Λογοτεχνία");
+
+                ArrayList<String> optionalNames = new ArrayList<>();
+                optionalNames.add("Αγγλικά");
+                optionalNames.add("Γαλλικά");
+                optionalNames.add("Γερμανικά");
+
+                android.content.Intent intent = new Intent(LaunchingActivity.this, MainActivity.class);
+                intent.putExtra("title", title);
+                intent.putStringArrayListExtra("mandatoryNames", mandatoryNames);
+                intent.putStringArrayListExtra("optionalNames", optionalNames);
+                startActivity(intent);
             }
         });
 
         field2button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Subject> subjects = new ArrayList<>();
-                subjects.add(new Subject("Φυσική", new ArrayList<>()));
-                subjects.add(new Subject("Μαθηματικά", new ArrayList<>()));
-                subjects.add(new Subject("Χημεία", new ArrayList<>()));
-                subjects.add(new Subject("Νεοελληνική Γλώσσα και Λογοτεχνία", new ArrayList<>()));
-                field = new Field("Θετικών και Τεχνολογικών Επιστημών", new ArrayList<>(subjects));
-                openMainActivity();
+                String title = "Θετικών και Τεχνολογικών Σπουδών";
+
+                ArrayList<String> mandatoryNames = new ArrayList<>();
+                mandatoryNames.add("Φυσική");
+                mandatoryNames.add("Μαθηματικά");
+                mandatoryNames.add("Χημεία");
+                mandatoryNames.add("Νεοελληνική Γλώσσα και Λογοτεχνία");
+
+                ArrayList<String> optionalNames = new ArrayList<>();
+                optionalNames.add("Αγγλικά");
+                optionalNames.add("Γαλλικά");
+                optionalNames.add("Γερμανικά");
+
+                android.content.Intent intent = new Intent(LaunchingActivity.this, MainActivity.class);
+                intent.putExtra("title", title);
+                intent.putStringArrayListExtra("mandatoryNames", mandatoryNames);
+                intent.putStringArrayListExtra("optionalNames", optionalNames);
+                startActivity(intent);
             }
         });
 
         field3button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Subject> subjects = new ArrayList<>();
-                subjects.add(new Subject("Φυσική", new ArrayList<>()));
-                subjects.add(new Subject("Βιολογία", new ArrayList<>()));
-                subjects.add(new Subject("Χημεία", new ArrayList<>()));
-                subjects.add(new Subject("Νεοελληνική Γλώσσα και Λογοτεχνία", new ArrayList<>()));
-                field = new Field("Επιστημών Υγείας και Ζωής", new ArrayList<>(subjects));
-                openMainActivity();
+                String title = "Επιστημών Υγείας και Ζωής";
+
+                ArrayList<String> mandatoryNames = new ArrayList<>();
+                mandatoryNames.add("Φυσική");
+                mandatoryNames.add("Βιολογία");
+                mandatoryNames.add("Χημεία");
+                mandatoryNames.add("Νεοελληνική Γλώσσα και Λογοτεχνία");
+
+                ArrayList<String> optionalNames = new ArrayList<>();
+                optionalNames.add("Αγγλικά");
+                optionalNames.add("Γαλλικά");
+                optionalNames.add("Γερμανικά");
+
+                android.content.Intent intent = new Intent(LaunchingActivity.this, MainActivity.class);
+                intent.putExtra("title", title);
+                intent.putStringArrayListExtra("mandatoryNames", mandatoryNames);
+                intent.putStringArrayListExtra("optionalNames", optionalNames);
+                startActivity(intent);
             }
         });
 
         field4button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Subject> subjects = new ArrayList<>();
-                subjects.add(new Subject("Μαθηματικά", new ArrayList<>()));
-                subjects.add(new Subject("ΑΕΠΠ", new ArrayList<>()));
-                subjects.add(new Subject("ΑΟΘ", new ArrayList<>()));
-                subjects.add(new Subject("Νεοελληνική Γλώσσα και Λογοτεχνία", new ArrayList<>()));
-                field = new Field("Επιστημών Οικονομίας και Πληροφορικής", new ArrayList<>(subjects));
-                openMainActivity();
+                String title = "Επιστημών Οικονομίας και Πληροφορικής";
+
+                ArrayList<String> mandatoryNames = new ArrayList<>();
+                mandatoryNames.add("Μαθηματικά");
+                mandatoryNames.add("ΑΕΠΠ");
+                mandatoryNames.add("ΑΟΘ");
+                mandatoryNames.add("Νεοελληνική Γλώσσα και Λογοτεχνία");
+
+                ArrayList<String> optionalNames = new ArrayList<>();
+                optionalNames.add("Αγγλικά");
+                optionalNames.add("Γαλλικά");
+                optionalNames.add("Γερμανικά");
+
+                android.content.Intent intent = new Intent(LaunchingActivity.this, MainActivity.class);
+                intent.putExtra("title", title);
+                intent.putStringArrayListExtra("mandatoryNames", mandatoryNames);
+                intent.putStringArrayListExtra("optionalNames", optionalNames);
+                startActivity(intent);
             }
         });
     }
 
-    public void openMainActivity() {
-        //Create the Intent to start the main Activity
-        Intent i = new Intent(this, MainActivity.class);
 
-
-        //Ask Android to start the new Activity
-        startActivity(i);
-
-    }
-
-    }
+}

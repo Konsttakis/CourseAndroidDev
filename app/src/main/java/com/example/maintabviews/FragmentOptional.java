@@ -1,5 +1,6 @@
 package com.example.maintabviews;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,21 +11,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Field3 extends Fragment {
+public class FragmentOptional extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_field3, container, false);
+        View view = inflater.inflate(R.layout.fragment_field2, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.field3);
+        RecyclerView recyclerView = view.findViewById(R.id.field2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         SubjectManager subjectManager = SubjectManager.getInstance();
-        List<Subject> subjectList = subjectManager.getField3();
+        ArrayList<Subject> subjectList = subjectManager.getOptionalSubjects();
         SubjectAdapter adapter = new SubjectAdapter(subjectList);
         recyclerView.setAdapter(adapter);
 
@@ -32,8 +34,15 @@ public class Field3 extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Log.d("Field", "onItemClick: Clicked");
+
+                Subject clickedSubject = subjectList.get(position);
+
+                Intent intent = new Intent(getActivity(), ChaptersActivity.class);
+                intent.putExtra("subject", clickedSubject.getName());
+                startActivity(intent);
             }
         });
+
 
         return view;
     }
