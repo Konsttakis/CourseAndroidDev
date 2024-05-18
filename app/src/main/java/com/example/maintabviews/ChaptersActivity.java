@@ -11,6 +11,8 @@ import java.util.List;
 
 public class ChaptersActivity extends AppCompatActivity {
 
+    SubjectManager subjectManager = SubjectManager.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +21,12 @@ public class ChaptersActivity extends AppCompatActivity {
         // Receive subject name passed via Intent
         String subjectName = getIntent().getStringExtra("subject_name");
 
-        List<Chapter> chapterList = getChaptersForSubject(subjectName);
+        ArrayList<Chapter> chapterList = new ArrayList<>();
+        for (Subject subject : subjectManager.getMandatorySubjects()) {
+            if (subject.getName().equals(subjectName)) {
+                chapterList.addAll(subject.getChapters());
+            }
+        }
 
         // Set up RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);

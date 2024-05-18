@@ -14,7 +14,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "chapterCompleted";
     public static final String TABLE_COMPLETED_CHAPTERS = "CompletedChapters";
     public static final String COLUMN_ID = "id";
-    public static final String COLUMN_COURSE_NAME = "course_name";
+    public static final String COLUMN_SUBJECT_NAME = "subject_name";
     public static final String COLUMN_CHAPTER_NAME = "chapter_name";
     public static final String COLUMN_IS_COMPLETED = "is_completed";
 
@@ -27,10 +27,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String TABLE_CREATE =
                 "CREATE TABLE " + TABLE_COMPLETED_CHAPTERS + " (" +
                         COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        COLUMN_COURSE_NAME + " TEXT NOT NULL, " +
+                        COLUMN_SUBJECT_NAME + " TEXT NOT NULL, " +
                         COLUMN_CHAPTER_NAME + " TEXT NOT NULL, " +
                         COLUMN_IS_COMPLETED + " INTEGER NOT NULL);";
         db.execSQL(TABLE_CREATE);
+
+        initializeChapter(db);
     }
 
     @Override
@@ -44,14 +46,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_IS_COMPLETED, isCompleted ? 1 : 0);
-        db.update(TABLE_COMPLETED_CHAPTERS, values, COLUMN_COURSE_NAME + " = ? AND " + COLUMN_CHAPTER_NAME + " = ?", new String[]{chapter.getCourseName(), chapter.getName()});
+        db.update(TABLE_COMPLETED_CHAPTERS, values, COLUMN_SUBJECT_NAME + " = ? AND " + COLUMN_CHAPTER_NAME + " = ?", new String[]{chapter.getCourseName(), chapter.getName()});
 
         db.close();
     }
 
-    public List<Chapter> getAllChaptersIn(String course) {
-        List<Chapter> chapters = new ArrayList<Chapter>();
-        String selectQuery = "SELECT * FROM " + TABLE_COMPLETED_CHAPTERS + " WHERE " + COLUMN_COURSE_NAME + " = '" + course + "';";
+    public ArrayList<Chapter> getAllChaptersIn(String subject) {
+        ArrayList<Chapter> chapters = new ArrayList<Chapter>();
+        String selectQuery = "SELECT * FROM " + TABLE_COMPLETED_CHAPTERS + " WHERE " + COLUMN_SUBJECT_NAME + " = '" + subject + "';";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -65,5 +67,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         return chapters;
+    }
+
+    private void initializeChapter(SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SUBJECT_NAME, "Μαθηματικά");
+        values.put(COLUMN_CHAPTER_NAME, "Chapter 1");
+        values.put(COLUMN_IS_COMPLETED, 0);
+        db.insert(TABLE_COMPLETED_CHAPTERS, null, values);
+
+        values.put(COLUMN_SUBJECT_NAME, "Μαθηματικά");
+        values.put(COLUMN_CHAPTER_NAME, "Chapter 2");
+        values.put(COLUMN_IS_COMPLETED, 0);
+        db.insert(TABLE_COMPLETED_CHAPTERS, null, values);
+
+        values.put(COLUMN_SUBJECT_NAME, "Μαθηματικά");
+        values.put(COLUMN_CHAPTER_NAME, "Chapter 3");
+        values.put(COLUMN_IS_COMPLETED, 0);
+        db.insert(TABLE_COMPLETED_CHAPTERS, null, values);
+
+        values.put(COLUMN_SUBJECT_NAME, "Φυσική");
+        values.put(COLUMN_CHAPTER_NAME, "Chapter 1");
+        values.put(COLUMN_IS_COMPLETED, 0);
+        db.insert(TABLE_COMPLETED_CHAPTERS, null, values);
+
+
     }
 }
