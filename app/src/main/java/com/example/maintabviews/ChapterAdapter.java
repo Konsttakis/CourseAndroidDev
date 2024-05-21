@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHolder> {
+    DatabaseHandler dbHelper = MainActivity.getDbHelper();
     private List<Chapter> chapterList;
     private int selectedPosition = -1;
 
@@ -35,6 +36,8 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             chapter.setCompleted(isChecked);
             notifyItemChanged(position);
+            dbHelper.updateCompleted(chapter,isChecked);
+
         });
     }
 

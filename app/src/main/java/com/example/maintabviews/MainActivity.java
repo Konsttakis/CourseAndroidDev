@@ -21,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
-
+    private static DatabaseHandler dbHelper;
     SubjectsSingleton subjectsSingleton = SubjectsSingleton.getInstance();
     private ArrayList<Subject> mandatorySubjects;
     private ArrayList<Subject> optionalSubjects;
 
-    private DatabaseHandler dbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +66,29 @@ public class MainActivity extends AppCompatActivity {
         ).attach();
     }
 
+    public static DatabaseHandler getDbHelper() {
+        return dbHelper;
+    }
+
     public void loadSubjects(List<String> mandatoryNames, List<String> optionalNames) {
 
+
+        try {
+            dbHelper.createDataBase();
+            dbHelper.openDataBase();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//
+//        adapter = new MyAdapter(this, data);
+//        recyclerView.setAdapter(adapter);
         for (String subjectName : mandatoryNames) {
             ArrayList<Chapter> chapters = dbHelper.getAllChaptersIn(subjectName);
             Subject subject = new Subject(subjectName, new ArrayList<>(chapters));
             mandatorySubjects.add(subject);
+            System.out.println(chapters);
         }
 
         for (String subjectName : optionalNames) {
