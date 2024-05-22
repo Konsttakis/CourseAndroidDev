@@ -36,7 +36,7 @@ public class ChaptersActivity extends AppCompatActivity {
         // Set up RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ChapterAdapter adapter = new ChapterAdapter(chapterList);
+        ChapterAdapter adapter = new ChapterAdapter(this, chapterList);
         recyclerView.setAdapter(adapter);
     }
 

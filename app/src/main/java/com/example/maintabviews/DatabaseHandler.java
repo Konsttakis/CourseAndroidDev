@@ -1,5 +1,6 @@
 package com.example.maintabviews;
 
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,14 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
-import android.app.Activity;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
@@ -202,15 +200,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //    }
 
 
-    public void updateCompleted(Chapter chapter, boolean isCompleted) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_IS_COMPLETED, isCompleted ? 1 : 0);
-        db.update(TABLE_COMPLETED_CHAPTERS, values, COLUMN_SUBJECT_NAME + " = ? AND " + COLUMN_CHAPTER_NAME + " = ?", new String[]{chapter.getCourseName(), chapter.getName()});
 
-        db.close();
-    }
 
     public ArrayList<Chapter> getAllChaptersIn(String subject) {
         ArrayList<Chapter> chapters = new ArrayList<>();
