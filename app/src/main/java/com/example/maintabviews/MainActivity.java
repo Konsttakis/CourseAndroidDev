@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
-    private static DatabaseHandler dbHelper;
+    private DatabaseHandler dbHelper;
     SubjectsSingleton subjectsSingleton = SubjectsSingleton.getInstance();
     private ArrayList<Subject> mandatorySubjects;
     private ArrayList<Subject> optionalSubjects;
@@ -66,9 +66,7 @@ public class MainActivity extends AppCompatActivity {
         ).attach();
     }
 
-    public static DatabaseHandler getDbHelper() {
-        return dbHelper;
-    }
+
 
     public void loadSubjects(List<String> mandatoryNames, List<String> optionalNames) {
 
@@ -86,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setAdapter(adapter);
         for (String subjectName : mandatoryNames) {
             ArrayList<Chapter> chapters = dbHelper.getAllChaptersIn(subjectName);
+            for (Chapter chapter : chapters) {
+                ArrayList<SubChapter> subChapters = dbHelper.getSubChapters(chapter.getTitle());
+//                chapter.setSubChapters(subChapters);
+            }
             Subject subject = new Subject(subjectName, new ArrayList<>(chapters));
             mandatorySubjects.add(subject);
             System.out.println(chapters);

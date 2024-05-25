@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChaptersActivity extends AppCompatActivity {
 
@@ -17,26 +18,28 @@ public class ChaptersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapters);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        DatabaseHandler dbHandler = new DatabaseHandler(this);
         // Receive subject name passed via Intent
         String subjectName = getIntent().getStringExtra("subjectName");
 
-        ArrayList<Chapter> chapterList = new ArrayList<>();
+        List<Chapter> chapters = new ArrayList<>();
         for (Subject subject : subjectsSingleton.getMandatorySubjects()) {
             if (subject.getName().equals(subjectName)) {
-                chapterList.addAll(subject.getChapters());
+                chapters = dbHandler.getAllChaptersIn(subjectName);
             }
         }
         for (Subject subject : subjectsSingleton.getOptionalSubjects()) {
             if (subject.getName().equals(subjectName)) {
-                chapterList.addAll(subject.getChapters());
+                chapters = dbHandler.getAllChaptersIn(subjectName);
             }
         }
 
         // Set up RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ChapterAdapter adapter = new ChapterAdapter(this, chapterList);
+
+        ChapterAdapter adapter = new ChapterAdapter(this, chapters);
         recyclerView.setAdapter(adapter);
     }
 

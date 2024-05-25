@@ -1,7 +1,6 @@
 package com.example.maintabviews;
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -29,6 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_SUBJECT_NAME = "subject_name";
     public static final String COLUMN_CHAPTER_NAME = "chapter_name";
+    public static final String COLUMN_SUBCHAPTER_NAME = "subchapter_name";
     public static final String COLUMN_IS_COMPLETED = "is_completed";
 
     /**
@@ -172,40 +173,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // This method is used to get the
-    // algorithm topics from the database.
-//    public List<String> getAlgorithmTopics(
-//            Activity activity)
-//    {
-//        sqLiteOpenHelper
-//                = new DatabaseHelper(activity);
-//        SQLiteDatabase db
-//                = sqLiteOpenHelper
-//                .getWritableDatabase();
-//
-//        List<String> list
-//                = new ArrayList<>();
-//
-//        // query help us to return all data
-//        // the present in the ALGO_TOPICS table.
-//        String query = "SELECT * FROM " + ALGO_TOPICS;
-//        Cursor cursor = db.rawQuery(query, null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                list.add(cursor.getString(1));
-//            } while (cursor.moveToNext());
-//        }
-//        return list;
-//    }
-
-
-
-
 
     public ArrayList<Chapter> getAllChaptersIn(String subject) {
         ArrayList<Chapter> chapters = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_COMPLETED_CHAPTERS + " WHERE " + COLUMN_SUBJECT_NAME + " = '" + subject + "';";
+        String selectQuery = "SELECT DISTINCT " + COLUMN_CHAPTER_NAME + " FROM " + TABLE_COMPLETED_CHAPTERS + " WHERE " + COLUMN_SUBJECT_NAME + " = '" + subject + "';";
         sqLiteOpenHelper = new DatabaseHandler(myContext);
         SQLiteDatabase db
                 = sqLiteOpenHelper
@@ -215,7 +186,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Chapter chapter = new Chapter(cursor.getString(1), cursor.getString(2), cursor.getInt(3) == 1);
+                Chapter chapter = new Chapter(cursor.getString(0), getSubChapters(cursor.getString(0)),false);
                 chapters.add(chapter);
             } while (cursor.moveToNext());
 
@@ -223,8 +194,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         return chapters;
     }
+    public ArrayList<SubChapter> getSubChapters(String chapter) {
+
+        ArrayList<SubChapter> subChapters = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + TABLE_COMPLETED_CHAPTERS + " WHERE " + COLUMN_CHAPTER_NAME + " = '" + chapter + "';";
+
+        SQLiteDatabase db
+                = sqLiteOpenHelper
+                .getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                SubChapter subChapter = new SubChapter(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1);
+                subChapters.add(subChapter);
+            } while (cursor.moveToNext());
+
+        }
+        cursor.close();
+        return subChapters;
+    }
 }
-
-
-
-

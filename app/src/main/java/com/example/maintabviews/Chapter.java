@@ -1,30 +1,34 @@
 package com.example.maintabviews;
 
+import static com.example.maintabviews.DatabaseHandler.COLUMN_CHAPTER_NAME;
+import static com.example.maintabviews.DatabaseHandler.TABLE_COMPLETED_CHAPTERS;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Chapter {
+    private String title;
 
-    private final String courseName;
-    private final String name;
-    private boolean isCompleted = false;
+    private List<SubChapter> subChapters;
+    private boolean isExpanded;
 
-    public Chapter(String courseName, String name, boolean isCompleted) {
-        this.courseName = courseName;
-        this.name = name;
-        this.isCompleted = isCompleted;
+    public Chapter(String title, List<SubChapter> subChapters, boolean isExpanded) {
+        this.title = title;
+        this.subChapters = subChapters;
+        this.isExpanded = false;
     }
 
-    public String getCourseName() {
-        return courseName;
-    }
-    public String getName() {
-        return name;
+    public String getTitle() { return title; }
+
+    public List<SubChapter> getSubChapters() {
+        return subChapters;
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
-    }
-
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
-
-    }
+    public boolean isExpanded() { return isExpanded; }
+    public void setExpanded(boolean expanded) { isExpanded = expanded; }
 }

@@ -15,5 +15,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="8dp"
-        tools:listitem="@layout/chapter" />
+        tools:listitem="@layout/chapter_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

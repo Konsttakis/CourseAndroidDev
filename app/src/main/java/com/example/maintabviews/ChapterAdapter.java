@@ -1,34 +1,27 @@
 package com.example.maintabviews;
 
 import static com.example.maintabviews.DatabaseHandler.COLUMN_CHAPTER_NAME;
-import static com.example.maintabviews.DatabaseHandler.COLUMN_IS_COMPLETED;
-import static com.example.maintabviews.DatabaseHandler.COLUMN_SUBJECT_NAME;
 import static com.example.maintabviews.DatabaseHandler.TABLE_COMPLETED_CHAPTERS;
-import static com.example.maintabviews.MainActivity.getDbHelper;
 
-import android.content.ClipData;
-import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHolder> {
+public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterViewHolder> {
 
     private List<Chapter> chapterList;
-    private int selectedPosition = -1;
     private final Context context;
 
     public ChapterAdapter(Context context, List<Chapter> chapterList) {
@@ -38,25 +31,29 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chapter, parent, false);
-        return new ViewHolder(view);
+    public ChapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chapter_parent, parent, false);
+        return new ChapterViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChapterViewHolder holder, int position) {
         Chapter chapter = chapterList.get(position);
-        holder.checkbox.setOnCheckedChangeListener(null); // Remove listener before updating state
-        holder.checkbox.setText(chapter.getName());
-        holder.checkbox.setChecked(chapter.isCompleted());
-        holder.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int pos = holder.getAdapterPosition();
-            chapter.setCompleted(isChecked);
-            chapterList.get(pos).setCompleted(isChecked); // Update the data model
-            updateCompleted(chapter, isChecked, position);
+        holder.chapterTitle.setText(chapter.getTitle());
 
+        boolean isExpanded = chapter.isExpanded();
+        holder.content.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
+        // Ensure each chapter has its own adapter
+        if (isExpanded) {
+            SubChapterAdapter subChapterAdapter = new SubChapterAdapter(context, chapter.getSubChapters());
+            holder.subChapterRecyclerView.setAdapter(subChapterAdapter);
+        }
+
+        holder.itemView.setOnClickListener(v -> {
+            chapter.setExpanded(!chapter.isExpanded());
+            notifyItemChanged(position);
         });
-
     }
 
     @Override
@@ -64,40 +61,22 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
         return chapterList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        CheckBox checkbox;
 
-        public ViewHolder(View itemView) {
+    public static class ChapterViewHolder extends RecyclerView.ViewHolder {
+        TextView chapterTitle;
+        LinearLayout content;
+        RecyclerView subChapterRecyclerView;
+
+        public ChapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            checkbox = itemView.findViewById(R.id.checkbox);
+            chapterTitle = itemView.findViewById(R.id.header);
+            content = itemView.findViewById(R.id.content);
+            subChapterRecyclerView = itemView.findViewById(R.id.recyclerViewChild);
+            subChapterRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+//            RecyclerView recyclerView = itemView.findViewById(R.id.recyclerViewChild);
+//            recyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+//            SubChapterAdapter adapter = new SubChapterAdapter(this, chapterList);
+//            recyclerView.setAdapter(adapter);
         }
     }
-
-    private void updateCompleted(Chapter chapter, boolean isChecked, int position) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // Example database operation
-                    SQLiteDatabase db = new DatabaseHandler(context).getWritableDatabase();
-                    ContentValues values = new ContentValues();
-                    values.put(COLUMN_IS_COMPLETED, isChecked ? 1 : 0);
-                    int rowsAffected = db.update(TABLE_COMPLETED_CHAPTERS, values, COLUMN_SUBJECT_NAME + " = ? AND " + COLUMN_CHAPTER_NAME + " = ?", new String[]{chapter.getCourseName(), chapter.getName()});
-                    Log.d("DatabaseUpdate", "Rows affected: " + rowsAffected);
-
-                    // Post UI update to the main thread
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            notifyItemChanged(position);
-                        }
-                    });
-                } catch (Exception e) {
-                    Log.e("DatabaseError", "Error updating database", e);
-                }
-            }
-        }).start();
-    }
 }
-
-
