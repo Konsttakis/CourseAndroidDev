@@ -5,13 +5,16 @@ public class SubChapter {
     private final String courseName;
     private final String chapterName;
     private final String name;
-    private boolean isCompleted = false;
-
-    public SubChapter(String courseName, String chapterName, String name, boolean isCompleted) {
+    private boolean isCompleted;
+    private String description;
+    private boolean isExpanded;
+    public SubChapter(String courseName, String chapterName, String name, boolean isCompleted, String description) {
         this.courseName = courseName;
         this.chapterName = chapterName;
         this.name = name;
         this.isCompleted = isCompleted;
+        this.description = description;
+        this.isExpanded = false;
     }
 
     public String getCourseName() {
@@ -33,4 +36,15 @@ public class SubChapter {
         isCompleted = completed;
 
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isExpanded() { return isExpanded; }
+    public void setExpanded(boolean expanded) { isExpanded = expanded; }
 }

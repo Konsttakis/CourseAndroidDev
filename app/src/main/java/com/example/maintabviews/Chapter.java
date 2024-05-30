@@ -17,7 +17,7 @@ public class Chapter {
     private List<SubChapter> subChapters;
     private boolean isExpanded;
 
-    public Chapter(String title, List<SubChapter> subChapters, boolean isExpanded) {
+    public Chapter(String title, List<SubChapter> subChapters) {
         this.title = title;
         this.subChapters = subChapters;
         this.isExpanded = false;

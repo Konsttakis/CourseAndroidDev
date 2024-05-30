@@ -15,9 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -43,14 +48,26 @@ public class SubChapterAdapter extends RecyclerView.Adapter<SubChapterAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SubChapter subChapter = subChapterList.get(position);
         holder.checkbox.setOnCheckedChangeListener(null); // Remove listener before updating state
-        holder.checkbox.setText(subChapter.getName());
+        holder.checkboxText.setText(subChapter.getName());
         holder.checkbox.setChecked(subChapter.isCompleted());
 
+        holder.expandableContent.setVisibility(subChapter.isExpanded() ? View.VISIBLE : View.GONE);
+
+        holder.checkboxContainer.setOnClickListener(v -> {
+            if (!holder.checkbox.isPressed()) {
+                subChapter.setExpanded(!subChapter.isExpanded());
+                notifyItemChanged(position);
+            }
+        });
         holder.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             int pos = holder.getAdapterPosition();
             subChapter.setCompleted(isChecked);
             subChapterList.get(pos).setCompleted(isChecked); // Update the data model
             updateCompleted(subChapter, isChecked, position);
+        });
+        holder.button.setOnClickListener(v -> {
+            String text = holder.editText.getText().toString();
+            // Handle save action
         });
     }
 
@@ -61,10 +78,19 @@ public class SubChapterAdapter extends RecyclerView.Adapter<SubChapterAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox checkbox;
-
+        TextView checkboxText;
+        LinearLayout checkboxContainer;
+        LinearLayout expandableContent;
+        EditText editText;
+        Button button;
         public ViewHolder(View itemView) {
             super(itemView);
             checkbox = itemView.findViewById(R.id.checkbox);
+            checkboxText = itemView.findViewById(R.id.textView);
+            checkboxContainer = itemView.findViewById(R.id.checkboxContainer);
+            expandableContent = itemView.findViewById(R.id.expandableContent);
+            editText = itemView.findViewById(R.id.editTextText);
+            button = itemView.findViewById(R.id.button);
         }
     }
 
@@ -81,7 +107,7 @@ public class SubChapterAdapter extends RecyclerView.Adapter<SubChapterAdapter.Vi
                             new String[]{subChapter.getCourseName(), subChapter.getChapterName(), subChapter.getName()});
                     Log.d("DatabaseUpdate", "Rows affected: " + rowsAffected);
                     Log.d("DatabaseUpdate", "SubChapter: " + subChapter.getName() + ", Completed: " + subChapter.isCompleted());
-//                    new Handler(Looper.getMainLooper()).post(() -> notifyItemChanged(position));
+
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.List;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -186,7 +185,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Chapter chapter = new Chapter(cursor.getString(0), getSubChapters(cursor.getString(0)),false);
+                Chapter chapter = new Chapter(cursor.getString(0), getSubChapters(cursor.getString(0)));
                 chapters.add(chapter);
             } while (cursor.moveToNext());
 
@@ -207,7 +206,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                SubChapter subChapter = new SubChapter(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1);
+                SubChapter subChapter = new SubChapter(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1, "sos");
                 subChapters.add(subChapter);
             } while (cursor.moveToNext());
 
