@@ -46,8 +46,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Σημειώσεις"
-            android:inputType="text"
             android:textSize="14sp"
+            android:inputType="textMultiLine"
             android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="4dp" />

@@ -30,6 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String COLUMN_CHAPTER_NAME = "chapter_name";
     public static final String COLUMN_SUBCHAPTER_NAME = "subchapter_name";
     public static final String COLUMN_IS_COMPLETED = "is_completed";
+    public static final String COLUMN_DESCRIPTION = "description";
 
     /**
      * Constructor
@@ -206,7 +207,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                SubChapter subChapter = new SubChapter(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1, "sos");
+                SubChapter subChapter = new SubChapter(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1, cursor.getString(5));
                 subChapters.add(subChapter);
             } while (cursor.moveToNext());
 

@@ -1,6 +1,7 @@
 package com.example.maintabviews;
 
 import static com.example.maintabviews.DatabaseHandler.COLUMN_CHAPTER_NAME;
+import static com.example.maintabviews.DatabaseHandler.COLUMN_DESCRIPTION;
 import static com.example.maintabviews.DatabaseHandler.COLUMN_IS_COMPLETED;
 import static com.example.maintabviews.DatabaseHandler.COLUMN_SUBCHAPTER_NAME;
 import static com.example.maintabviews.DatabaseHandler.COLUMN_SUBJECT_NAME;
@@ -50,26 +51,29 @@ public class SubChapterAdapter extends RecyclerView.Adapter<SubChapterAdapter.Vi
         holder.checkbox.setOnCheckedChangeListener(null); // Remove listener before updating state
         holder.checkboxText.setText(subChapter.getName());
         holder.checkbox.setChecked(subChapter.isCompleted());
-
+        holder.editText.setText(subChapter.getDescription());
         holder.expandableContent.setVisibility(subChapter.isExpanded() ? View.VISIBLE : View.GONE);
 
         holder.checkboxContainer.setOnClickListener(v -> {
             if (!holder.checkbox.isPressed()) {
                 subChapter.setExpanded(!subChapter.isExpanded());
                 notifyItemChanged(position);
+
             }
         });
         holder.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            int pos = holder.getAdapterPosition();
+
             subChapter.setCompleted(isChecked);
-            subChapterList.get(pos).setCompleted(isChecked); // Update the data model
             updateCompleted(subChapter, isChecked, position);
         });
         holder.button.setOnClickListener(v -> {
             String text = holder.editText.getText().toString();
-            // Handle save action
+            subChapter.setDescription(text);
+            updateDescription(subChapter, text, position);
         });
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -107,6 +111,34 @@ public class SubChapterAdapter extends RecyclerView.Adapter<SubChapterAdapter.Vi
                             new String[]{subChapter.getCourseName(), subChapter.getChapterName(), subChapter.getName()});
                     Log.d("DatabaseUpdate", "Rows affected: " + rowsAffected);
                     Log.d("DatabaseUpdate", "SubChapter: " + subChapter.getName() + ", Completed: " + subChapter.isCompleted());
+
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyItemChanged(position);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("DatabaseError", "Error updating database", e);
+                }
+                // Ensure the database connection is closed
+            }
+
+        }).start();
+    }
+    private void updateDescription(SubChapter subChapter, String text, int position) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    SQLiteDatabase db = new DatabaseHandler(context).getWritableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put(COLUMN_DESCRIPTION, text);
+                    int rowsAffected = db.update(TABLE_COMPLETED_CHAPTERS, values,
+                            COLUMN_SUBJECT_NAME + " = ? AND " + COLUMN_CHAPTER_NAME + " = ? AND " + COLUMN_SUBCHAPTER_NAME + " = ?",
+                            new String[]{subChapter.getCourseName(), subChapter.getChapterName(), subChapter.getName()});
+                    Log.d("DatabaseUpdate", "Rows affected: " + rowsAffected);
+
 
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
