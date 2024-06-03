@@ -29,7 +29,7 @@ public class FragmentMandatory extends Fragment {
 
         SubjectsSingleton subjectsSingleton = SubjectsSingleton.getInstance();
         ArrayList<Subject> subjectList = subjectsSingleton.getMandatorySubjects();
-        SubjectAdapter adapter = new SubjectAdapter(subjectList);
+        SubjectAdapter adapter = new SubjectAdapter(getContext(), subjectList);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new SubjectAdapter.OnItemClickListener() {

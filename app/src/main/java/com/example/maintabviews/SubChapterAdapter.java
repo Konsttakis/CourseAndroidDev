@@ -121,7 +121,6 @@ public class SubChapterAdapter extends RecyclerView.Adapter<SubChapterAdapter.Vi
                 } catch (Exception e) {
                     Log.e("DatabaseError", "Error updating database", e);
                 }
-                // Ensure the database connection is closed
             }
 
         }).start();

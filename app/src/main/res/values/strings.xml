@@ -17,4 +17,10 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="hello_there">Hello there :)</string>
+    <string name="choose_field">Διάλεξε την κατεύθυνση σου</string>
+    <string name="theoretical_field">Ανθρωπιστικών, Νομικών και Κοινωνικών Επιστημών</string>
+    <string name="sciences_field">Θετικών και Τεχνολογικών Επιστημών</string>
+    <string name="healthcare_field">Επιστημών Υγείας και Ζωής</string>
+    <string name="economics_field">Επιστημών Οικονομίας και Πληροφορικής</string>
 </resources>
