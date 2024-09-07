@@ -3,12 +3,15 @@ package com.example.maintabviews;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.PersistableBundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        Log.d("MainActivity", "onCreate: ");
+
         dbHelper = new DatabaseHandler(this);
         mandatorySubjects = new ArrayList<>();
         optionalSubjects = new ArrayList<>();
@@ -54,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> optionalNames = getIntent().getStringArrayListExtra("optionalNames");
         assert mandatoryNames != null;
         assert optionalNames != null;
+
         loadSubjects(mandatoryNames, optionalNames);
+
         subjectsSingleton.setMandatorySubjects(mandatorySubjects);
         subjectsSingleton.setOptionalSubjects(optionalSubjects);
 
@@ -66,11 +73,17 @@ public class MainActivity extends AppCompatActivity {
         ).attach();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
 
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     public void loadSubjects(List<String> mandatoryNames, List<String> optionalNames) {
-
-
         try {
             dbHelper.createDataBase();
             dbHelper.openDataBase();
@@ -79,18 +92,13 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//
-//        adapter = new MyAdapter(this, data);
-//        recyclerView.setAdapter(adapter);
         for (String subjectName : mandatoryNames) {
             ArrayList<Chapter> chapters = dbHelper.getAllChaptersIn(subjectName);
             for (Chapter chapter : chapters) {
                 ArrayList<SubChapter> subChapters = dbHelper.getSubChapters(chapter.getTitle());
-//                chapter.setSubChapters(subChapters);
             }
             Subject subject = new Subject(subjectName, new ArrayList<>(chapters));
             mandatorySubjects.add(subject);
-            System.out.println(chapters);
         }
 
         for (String subjectName : optionalNames) {
