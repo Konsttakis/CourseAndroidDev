@@ -59,32 +59,48 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemView
         handler.post(runnable);
 
 
-//        switch (subject.getName()) {
-//            case "Αρχαία Ελληνικά":
-//                holder.iconImageView.setImageResource(R.drawable.ancient_greek);
-//                break;
-//            case "Ιστορία":
-//                holder.iconImageView.setImageResource(R.drawable.history);
-//                break;
-//            case "Λατινικά":
-//                holder.iconImageView.setImageResource(R.drawable.latin);
-//                break;
-//            case "Νεοελληνική Γλώσσα και Λογοτεχνία":
-//                holder.iconImageView.setImageResource(R.drawable.essay);
-//                break;
-//            case "Αγγλικά":
-//                holder.iconImageView.setImageResource(R.drawable.english);
-//                break;
-//            case "Γαλλικά":
-//                holder.iconImageView.setImageResource(R.drawable.french);
-//                break;
-//            case "Γερμανικά":
-//                holder.iconImageView.setImageResource(R.drawable.german);
-//                break;
-//            default:
-//                holder.iconImageView.setImageResource(R.drawable.book);
-//                break;
-//        }
+        switch (subject.getName()) {
+            case "Αρχαία Ελληνικά":
+                holder.iconImageView.setImageResource(R.drawable.ancient_greek);
+                break;
+            case "Ιστορία":
+                holder.iconImageView.setImageResource(R.drawable.history);
+                break;
+            case "Λατινικά":
+                holder.iconImageView.setImageResource(R.drawable.latin);
+                break;
+            case "Νεοελληνική Γλώσσα και Λογοτεχνία":
+                holder.iconImageView.setImageResource(R.drawable.literature);
+                break;
+            case "Μαθηματικά":
+                holder.iconImageView.setImageResource(R.drawable.math);
+                break;
+            case "Φυσική":
+                holder.iconImageView.setImageResource(R.drawable.science);
+                break;
+            case "Βιολογία":
+                holder.iconImageView.setImageResource(R.drawable.biology);
+                break;
+            case "Χημεία":
+                holder.iconImageView.setImageResource(R.drawable.chemistry);
+                break;
+            case "ΑΟΘ":
+                holder.iconImageView.setImageResource(R.drawable.aoth);
+                break;
+            case "ΑΕΠΠ":
+                holder.iconImageView.setImageResource(R.drawable.aepp);
+                break;
+            case "Αγγλικά":
+                holder.iconImageView.setImageResource(R.drawable.english);
+                break;
+            case "Γαλλικά":
+                holder.iconImageView.setImageResource(R.drawable.french);
+                break;
+            case "Γερμανικά":
+                holder.iconImageView.setImageResource(R.drawable.german);
+                break;
+
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

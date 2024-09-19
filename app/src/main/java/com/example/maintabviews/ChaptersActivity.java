@@ -2,7 +2,9 @@ package com.example.maintabviews;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,9 +40,22 @@ public class ChaptersActivity extends AppCompatActivity {
         }
 
         // Set up RecyclerView
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(subjectName);
+        }
 
         ChapterAdapter adapter = new ChapterAdapter(this, chapters);
         recyclerView.setAdapter(adapter);
-    }
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) { // When the Up button is pressed
+            finish(); // Finish this activity and go back
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

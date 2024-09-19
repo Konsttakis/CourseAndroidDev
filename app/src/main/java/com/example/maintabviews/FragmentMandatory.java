@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class FragmentMandatory extends Fragment {
 
-    SubjectsSingleton subjectsSingleton = SubjectsSingleton.getInstance();
 
 
     @Nullable

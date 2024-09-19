@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -12,7 +14,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.PersistableBundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
+
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -38,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+
+            // Set only the top padding for the status bar, avoid changing left, right, or bottom
+            v.setPadding(0, systemBars.top, 0, 0);
             return insets;
         });
 
@@ -47,18 +53,24 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHandler(this);
         mandatorySubjects = new ArrayList<>();
         optionalSubjects = new ArrayList<>();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        TextView title = findViewById(R.id.title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        TextView title = findViewById(R.id.toolbar_title);
         title.setText(getIntent().getStringExtra("title"));
-
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(new ViewPagerAdapter(this));
         tabLayout = findViewById(R.id.tab_layout);
 
         ArrayList<String> mandatoryNames = getIntent().getStringArrayListExtra("mandatoryNames");
         ArrayList<String> optionalNames = getIntent().getStringArrayListExtra("optionalNames");
-        assert mandatoryNames != null;
-        assert optionalNames != null;
+//        assert mandatoryNames != null;
+//        assert optionalNames != null;
 
         loadSubjects(mandatoryNames, optionalNames);
 
@@ -71,8 +83,16 @@ public class MainActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setText(tabNames.get(position))
         ).attach();
-    }
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) { // When the Up button is pressed
+            finish(); // Finish this activity and go back
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
