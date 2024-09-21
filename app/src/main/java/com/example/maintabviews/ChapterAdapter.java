@@ -73,10 +73,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
             content = itemView.findViewById(R.id.content);
             subChapterRecyclerView = itemView.findViewById(R.id.recyclerViewChild);
             subChapterRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-//            RecyclerView recyclerView = itemView.findViewById(R.id.recyclerViewChild);
-//            recyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-//            SubChapterAdapter adapter = new SubChapterAdapter(this, chapterList);
-//            recyclerView.setAdapter(adapter);
+
         }
     }
 }

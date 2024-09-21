@@ -31,60 +31,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.myContext = context;
-        DB_PATH = myContext.getDatabasePath(DATABASE_NAME).toString();
-        try {
-            createDataBase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
-    public void createDataBase() throws IOException {
-        if (!checkDataBase()) {
-            this.getWritableDatabase();
-            try {
-                copyDataBase();
-                Log.d("DatabaseHandler", "Database copied successfully");
-            } catch (IOException e) {
-                throw new Error("Error copying database");
-            }
-        } else {
-            Log.d("DatabaseHandler", "Database already exists");
-        }
-    }
-
-    private boolean checkDataBase() {
-        SQLiteDatabase checkDB = null;
-        try {
-            checkDB = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
-        } catch (SQLiteException e) {
-            Log.e("DatabaseHandler", "Database does not exist yet.");
-        }
-        if (checkDB != null) {
-            checkDB.close();
-        }
-        return checkDB != null;
-    }
-
-    private void copyDataBase() throws IOException {
-        try (InputStream myInput = myContext.getAssets().open(DATABASE_NAME);
-             OutputStream myOutput = Files.newOutputStream(Paths.get(DB_PATH))) {
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = myInput.read(buffer)) > 0) {
-                myOutput.write(buffer, 0, length);
-            }
-            myOutput.flush();
-        }
-    }
-
-    public void openDataBase() {
-        try {
-            chaptersDB = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public synchronized void close() {
@@ -97,18 +46,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // No need to implement as we are using a pre-populated database
+        String CREATE_TABLE = "CREATE TABLE " +
+        TABLE_COMPLETED_CHAPTERS + "("+ COLUMN_ID + " INTEGER PRIMARY KEY," +
+        COLUMN_SUBJECT_NAME + " TEXT," + COLUMN_CHAPTER_NAME + " TEXT," + COLUMN_SUBCHAPTER_NAME +
+                " TEXT," + COLUMN_IS_COMPLETED + " INTEGER," + COLUMN_DESCRIPTION + " TEXT)";
+                db.execSQL (CREATE_TABLE);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Handle database upgrade as needed
-        if (oldVersion < newVersion) {
-            try {
-                copyDataBase();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        db.execSQL ("DROP TABLE IF EXISTS " + TABLE_COMPLETED_CHAPTERS );
+        onCreate(db);
+
     }
 
     public ArrayList<Chapter> getAllChaptersIn(String subject) {

@@ -1,6 +1,5 @@
 package com.example.maintabviews;
 
-import android.util.Log;
 
 import java.util.ArrayList;
 

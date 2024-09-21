@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemViewHolder> {
 
@@ -25,7 +25,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ItemView
     private final Context context;
 
     public SubjectAdapter(Context context, ArrayList<Subject> subjectList) {
-
         this.subjectList = subjectList;
         this.context = context;
     }
