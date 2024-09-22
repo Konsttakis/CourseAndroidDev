@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,9 +32,50 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.myContext = context;
-
+        DB_PATH = myContext.getDatabasePath(DATABASE_NAME).toString();
+        try {
+            createDataBase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    public void createDataBase() throws IOException {
+        if (!checkDataBase()) {
+            this.getWritableDatabase();
+            try {
+                copyDataBase();
+                Log.d("DatabaseHandler", "Database copied successfully");
+            } catch (IOException e) {
+                throw new Error("Error copying database");
+            }
+        } else {
+            Log.d("DatabaseHandler", "Database already exists");
+        }
+    }
+
+    private boolean checkDataBase() {
+        File dbFile = new File(DB_PATH);
+        return dbFile.exists();
+    }
+    private void copyDataBase() throws IOException {
+        try (InputStream myInput = myContext.getAssets().open(DATABASE_NAME);
+             OutputStream myOutput = Files.newOutputStream(Paths.get(DB_PATH))) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = myInput.read(buffer)) > 0) {
+                myOutput.write(buffer, 0, length);
+            }
+            myOutput.flush();
+        }
+    }
+    public void openDataBase() {
+        try {
+            chaptersDB = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public synchronized void close() {
@@ -46,20 +88,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // No need to implement as we are using a pre-populated database
-        String CREATE_TABLE = "CREATE TABLE " +
-        TABLE_COMPLETED_CHAPTERS + "("+ COLUMN_ID + " INTEGER PRIMARY KEY," +
-        COLUMN_SUBJECT_NAME + " TEXT," + COLUMN_CHAPTER_NAME + " TEXT," + COLUMN_SUBCHAPTER_NAME +
-                " TEXT," + COLUMN_IS_COMPLETED + " INTEGER," + COLUMN_DESCRIPTION + " TEXT)";
-                db.execSQL (CREATE_TABLE);
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Handle database upgrade as needed
-        db.execSQL ("DROP TABLE IF EXISTS " + TABLE_COMPLETED_CHAPTERS );
-        onCreate(db);
-
+        if (oldVersion < newVersion) {
+            try {
+                copyDataBase();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public ArrayList<Chapter> getAllChaptersIn(String subject) {
@@ -69,7 +109,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         try (Cursor cursor = db.rawQuery(selectQuery, new String[]{subject})) {
             if (cursor.moveToFirst()) {
                 do {
-                    Chapter chapter = new Chapter(cursor.getString(0), getSubChapters(cursor.getString(0)));
+                    Chapter chapter = new Chapter(cursor.getString(0), getSubChapters(subject, cursor.getString(0)));
                     chapters.add(chapter);
                 } while (cursor.moveToNext());
             }
@@ -79,11 +119,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return chapters;
     }
 
-    public ArrayList<SubChapter> getSubChapters(String chapter) {
+    public ArrayList<SubChapter> getSubChapters(String subject, String chapter) {
         ArrayList<SubChapter> subChapters = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_COMPLETED_CHAPTERS + " WHERE " + COLUMN_CHAPTER_NAME + " = ?";
+        String selectQuery = "SELECT * FROM " + TABLE_COMPLETED_CHAPTERS + " WHERE " + COLUMN_SUBJECT_NAME + " = ?" + " AND " + COLUMN_CHAPTER_NAME + " = ?";
         SQLiteDatabase db = this.getReadableDatabase();
-        try (Cursor cursor = db.rawQuery(selectQuery, new String[]{chapter})) {
+        try (Cursor cursor = db.rawQuery(selectQuery, new String[]{subject, chapter})) {
             if (cursor.moveToFirst()) {
                 do {
                     SubChapter subChapter = new SubChapter(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1, cursor.getString(5));

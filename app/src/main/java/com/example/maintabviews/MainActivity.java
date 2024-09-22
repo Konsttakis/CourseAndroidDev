@@ -105,22 +105,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadSubjects(List<String> mandatoryNames, List<String> optionalNames) {
         try {
+            dbHelper.createDataBase();
+            dbHelper.openDataBase();
             for (String subjectName : mandatoryNames) {
                 ArrayList<Chapter> chapters = dbHelper.getAllChaptersIn(subjectName);
-                for (Chapter chapter : chapters) {
-                    ArrayList<SubChapter> subChapters = dbHelper.getSubChapters(chapter.getTitle());
-                }
                 Subject subject = new Subject(subjectName, new ArrayList<>(chapters));
                 mandatorySubjects.add(subject);
             }
 
             for (String subjectName : optionalNames) {
                 ArrayList<Chapter> chapters = dbHelper.getAllChaptersIn(subjectName);
-                Subject subject = new Subject(subjectName, chapters);
+                Subject subject = new Subject(subjectName,  new ArrayList<>(chapters));
                 optionalSubjects.add(subject);
             }
-//            dbHelper.createDataBase();
-//            dbHelper.openDataBase();
         }
         catch (Exception e) {
             e.printStackTrace();
